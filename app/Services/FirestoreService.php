@@ -85,6 +85,13 @@ class FirestoreService
         return basename($name);
     }
 
+    public function deleteDocument(string $collection, string $docId): void
+    {
+        $url      = "{$this->baseUrl}/{$collection}/{$docId}";
+        $response = Http::delete($url . '?' . http_build_query(['key' => $this->apiKey]));
+        $this->assertOk($response, "deleteDocument({$collection}/{$docId})");
+    }
+
     public function setDocument(string $collection, string $docId, array $data): void
     {
         $url      = "{$this->baseUrl}/{$collection}/{$docId}";

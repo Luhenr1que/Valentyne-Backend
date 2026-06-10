@@ -6,6 +6,7 @@ use App\Services\FirestoreService;
 use App\Services\StorageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class BirthdayController extends Controller
 {
@@ -16,8 +17,11 @@ class BirthdayController extends Controller
 
     public function index(): JsonResponse
     {
-        $list = $this->firestore->getCollection('birthday', ['orderBy' => 'id', 'direction' => 'asc']);
-        $list = $this->storage->resolveCollection($list, ['img']);
+        $list = Cache::remember('collection:birthday', 120, function () {
+            $list = $this->firestore->getCollection('birthday', ['orderBy' => 'id', 'direction' => 'asc']);
+            return $this->storage->resolveCollection($list, ['img']);
+        });
+
         return response()->json($list);
     }
 
@@ -31,6 +35,8 @@ class BirthdayController extends Controller
         foreach ($ids as $id) {
             $this->firestore->updateDocument('birthday', (string) $id, ['secret' => true]);
         }
+
+        Cache::forget('collection:birthday');
 
         return response()->json(['success' => true, 'unlocked' => $ids]);
     }
