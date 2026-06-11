@@ -17,9 +17,14 @@ class AppVersionController extends Controller
             $docs = $this->firestore->getCollection('apk_version', [
                 'orderBy'   => 'created_at',
                 'direction' => 'desc',
-                'pageSize'  => 1,
+                'pageSize'  => 20,
             ]);
-            return $docs[0] ?? null;
+
+            if (empty($docs)) return null;
+
+            usort($docs, fn($a, $b) => version_compare($b['version'] ?? '0', $a['version'] ?? '0'));
+
+            return $docs[0];
         });
 
         if (!$data) {
