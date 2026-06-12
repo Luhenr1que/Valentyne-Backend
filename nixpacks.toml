@@ -1,0 +1,7 @@
+# Força o Nixpacks a tratar este projeto como PHP/Laravel.
+# Sem isto, o package.json (Vite) faz o Railway detectar como app Node,
+# e nenhum processo PHP fica escutando na $PORT -> 502 "connection refused".
+#
+# O provider PHP do Nixpacks configura nginx + php-fpm escutando em 0.0.0.0:$PORT,
+# com document root em /public (entrypoint do Laravel).
+providers = ["php"]
