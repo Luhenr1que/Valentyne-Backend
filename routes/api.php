@@ -12,6 +12,7 @@ use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PushTokenController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health',      HealthController::class);
@@ -39,4 +40,10 @@ Route::post('/notify',        [NotificationController::class, 'send']);
 Route::prefix('birthday')->group(function () {
     Route::get('/',         [BirthdayController::class, 'index']);
     Route::post('/unlock',  [BirthdayController::class, 'unlock']);
+});
+
+Route::prefix('wishlist')->group(function () {
+    Route::get('/',        [WishlistController::class, 'index']);
+    Route::post('/',       [WishlistController::class, 'store']);
+    Route::delete('/{id}', [WishlistController::class, 'destroy']);
 });
