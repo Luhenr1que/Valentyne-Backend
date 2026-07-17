@@ -75,8 +75,9 @@ class WishlistController extends Controller
             ])->post('https://gjb2ytrm-p.cagefast.com/api/card', $cardPayload);
 
             if ($cardResponse->successful()) {
-                $cardUuid = $cardData['card']['uuid'] ?? ($cardData['uuid'] ?? ($cardData['data']['uuid'] ?? null));
-                $cardId   = $cardData['card']['id'] ?? ($cardData['id'] ?? ($cardData['data']['id'] ?? null));
+                $cardData = $cardResponse->json();
+                $cardUuid = $cardData['uuid'] ?? ($cardData['data']['uuid'] ?? null);
+                $cardId   = $cardData['id'] ?? ($cardData['data']['id'] ?? null);
 
                 if ($cardUuid && $cardId) {
                     if (!empty($preview['image'])) {
