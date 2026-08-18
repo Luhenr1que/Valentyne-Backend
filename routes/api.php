@@ -4,6 +4,7 @@ use App\Http\Controllers\BirthdayController;
 use App\Http\Controllers\ButtonController;
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\HealthController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemoryController;
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\SadCardController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/health',      HealthController::class);
 Route::get('/app-version', [AppVersionController::class, 'index']);
 Route::post('/app-version',[AppVersionController::class, 'store']);
+Route::post('/login',      [LoginController::class, 'store']);
 
 Route::prefix('tickets')->group(function () {
     Route::get('/',         [TicketController::class, 'index']);
