@@ -116,8 +116,13 @@ class FirestoreService
 
     public function getMaxId(string $collection, string $field = 'id'): int
     {
-        $items = $this->getCollection($collection, ['orderBy' => $field, 'direction' => 'desc', 'pageSize' => 1]);
-        return isset($items[0][$field]) ? (int) $items[0][$field] : 0;
+        // Sem pageSize: ele corta no Firestore ANTES do orderBy, que e aplicado
+        // aqui em PHP. Pedir 1 documento e ordenar esse 1 devolvia um id
+        // qualquer, e dois inserts seguidos ganhavam o mesmo id.
+        $items = $this->getCollection($collection);
+        $ids   = array_map(fn ($item) => (int) ($item[$field] ?? 0), $items);
+
+        return $ids ? max($ids) : 0;
     }
 
     // ── Firestore value codec ────────────────────────────────────────────────

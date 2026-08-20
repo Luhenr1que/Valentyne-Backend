@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BirthdayController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ButtonController;
 use App\Http\Controllers\DrawController;
 use App\Http\Controllers\HealthController;
@@ -37,6 +38,10 @@ Route::get('/memories', [MemoryController::class,  'index']);
 Route::get('/buttons',  [ButtonController::class,  'index']);
 Route::get('/sad-cards',[SadCardController::class, 'index']);
 Route::get('/travel',   [TravelController::class,  'index']);
+
+Route::get('/books',        [BookController::class, 'index']);
+Route::post('/books',       [BookController::class, 'store']);
+Route::delete('/books/{id}',[BookController::class, 'destroy']);
 
 Route::post('/push-token',    [PushTokenController::class,  'store']);
 Route::delete('/push-token',  [PushTokenController::class,  'destroy']);
