@@ -13,6 +13,7 @@ class PushTokenController extends Controller
     public function store(Request $request): JsonResponse
     {
         $token = $request->input('token');
+        $user  = $request->input('user');
 
         if (!$token || !str_starts_with($token, 'ExponentPushToken[')) {
             return response()->json(['error' => 'Token inválido'], 422);
@@ -23,7 +24,19 @@ class PushTokenController extends Controller
         ]);
 
         if (empty($existing)) {
-            $this->firestore->createDocument('push_tokens', ['token' => $token]);
+            $this->firestore->createDocument('push_tokens', ['token' => $token, 'user' => $user]);
+
+            return response()->json(['ok' => true]);
+        }
+
+        // Mesmo aparelho pode trocar de dono, e os tokens antigos nao tem dono
+        // nenhum. Sem $user nao sobrescreve — senao um caller velho apaga o dono.
+        if ($user) {
+            foreach ($existing as $doc) {
+                if (($doc['user'] ?? null) !== $user) {
+                    $this->firestore->updateDocument('push_tokens', $doc['docId'], ['user' => $user]);
+                }
+            }
         }
 
         return response()->json(['ok' => true]);

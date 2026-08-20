@@ -20,8 +20,8 @@ class NotificationController extends Controller
             return response()->json(['error' => 'body obrigatório'], 422);
         }
 
-        $this->notifications->send($title, $body, $data);
+        $sent = $this->notifications->send($title, $body, $data);
 
-        return response()->json(['ok' => true]);
+        return response()->json(['ok' => true, 'sent' => $sent]);
     }
 }
