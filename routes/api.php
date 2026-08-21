@@ -10,6 +10,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MemoryController;
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\SadCardController;
+use App\Http\Controllers\TermoController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\NotificationController;
@@ -38,6 +39,7 @@ Route::get('/memories', [MemoryController::class,  'index']);
 Route::get('/buttons',  [ButtonController::class,  'index']);
 Route::get('/sad-cards',[SadCardController::class, 'index']);
 Route::get('/travel',   [TravelController::class,  'index']);
+Route::get('/termo',    [TermoController::class,   'index']);
 
 Route::get('/books',        [BookController::class, 'index']);
 Route::post('/books',       [BookController::class, 'store']);
